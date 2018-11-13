@@ -23,6 +23,11 @@
   info.className = 'centered info';
   document.body.append(info);
 
+  var ttimer = document.createElement('p');
+  ttimer.className = 'centered timer';
+  document.body.append(ttimer);
+  ttimer.innerHTML = '0';
+
 
   var fps = 60;
   var rate;
@@ -32,6 +37,9 @@
   var currentWorkout;
   var currentStep;
   var currentSub;
+
+  var bTimerId;
+  var remainingTime;
 
   var circIncrease = true;
   var circIncRate = 200;
@@ -196,7 +204,8 @@ function togglePause() {
       ctxt.innerHTML = currentWorkout.steps[i].name;
       ttxt.innerHTML = currentWorkout.name;
       info.innerHTML = rate;
-
+      remaining = currentWorkout.steps[i].s[n][0] * 60;
+      ttimer.innerHTML = remaining;
       if (timerId != null) {
         timerId.clear();
         timerId = null;
@@ -213,8 +222,21 @@ function togglePause() {
           setRate(22);
           ttxt.innerHTML = 'FREE';
           info.innerHTML = rate;
+          ttimer.innerHTML = '0';
         }
       }, currentWorkout.steps[i].s[n][0]*60*1000);
+
+      if (bTimerId != null) {
+        bTimerId.clear();
+        bTimerId = null;
+      }
+
+      bTimerId = new Timer(()=>{
+        remaining -= 1;
+        ttimer.innerHTML = remaining;
+
+        bTimerId.reset();
+      }, 1000);
 
     }
 

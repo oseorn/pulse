@@ -45,3 +45,16 @@
   color:#fff;
   z-index:3;
 }
+
+.timer {
+  position:fixed;
+  margin: 0 auto;
+  bottom:90px;
+  left:50%;
+  transform:translate(-50%,0);
+  font-size:60px;
+  font-family:'Open Sans', sans-serif;
+  font-weight:bolder;
+  color:#fff;
+  z-index:3;
+}
