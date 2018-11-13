@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<head>
+  <script src='p5.min.js'></script>
+  <link rel='stylesheet' href='style.css'>
+  <title>PULSE</title>
+</head>
+<body>
+
+<script>
+
+  var ctxt = document.createElement('p');
+  ctxt.className = 'centered txt';
+  document.body.append(ctxt);
+  ctxt.innerHTML = 'WELCOME'
+  ctxt.onclick = () => {togglePause()};
+
+  var ttxt = document.createElement('p');
+  ttxt.className = 'title centered';
+  document.body.append(ttxt);
+  ttxt.innerHTML = 'FREE';
+
+  var info = document.createElement('p');
+  info.className = 'centered info';
+  document.body.append(info);
+
+
+  var fps = 60;
+  var rate;
+  var sPerStroke;
+
+  var timerId;
+  var currentWorkout;
+  var currentStep;
+  var currentSub;
+
+  var circIncrease = true;
+  var circIncRate = 200;
+  var circIndex = 0;
+  var circBoolTimerId;
+  var circIncTimerId;
+
+  var bgc, cc;
+
+  var free = true;
+  var paused = false;
+
+  setRate = (newRate) => {
+    rate = newRate;
+    sPerStroke = parseFloat((60/rate).toFixed(1));
+    info.innerHTML = rate;
+      if (circBoolTimerId != null) {
+        circBoolTimerId.clear();
+        circBoolTimerId = null;
+      }
+    circBoolTimerId = new  Timer(()=>{
+      circIncrease = !circIncrease;
+      circBoolTimerId.reset();
+    }, 0.5*(sPerStroke*1000)); //setInterval(()=>{circIncrease = !circIncrease;}, 0.5*(sPerStroke * 1000));
+
+
+      if (circIncTimerId != null) {
+        circIncTimerId.clear();
+        circIncTimerId = null;
+      }
+    circIncTimerId = new Timer(()=>{
+      circIndex += (circIncrease)?1:-1;
+      if (circIndex < 0) {
+        circIndex = 0;
+      } else
+      if (circIndex > circIncRate) {
+        circIndex = circIncRate;
+      }
+      circIncTimerId.reset();
+    }, (0.5*sPerStroke*1000)/circIncRate);
+  }
+
+  mapToCircle = (i, o, d) => {
+    if (o == 1) {
+      if (i + d >= 360) {
+        return (i + d) - 360;
+      } else return (i + d);
+
+    } else if (o == -1) {
+      if (i - d < 0) {
+        return (i - d) + 360;
+      } else return (i - d);
+    }
+  }
+
+  function Timer(callback, delay) {
+    var timer, start, remaining = delay;
+
+    this.pause = function() {
+        window.clearTimeout(timer);
+        remaining -= new Date() - start;
+    };
+
+    this.resume = function() {
+        start = new Date();
+        window.clearTimeout(timer);
+        timer = window.setTimeout(callback, remaining);
+    };
+
+    this.clear = function() {
+        window.clearTimeout(timer);
+    }
+
+    this.reset = function() {
+      timer = window.setTimeout(callback, delay);
+    }
+
+    this.resume();
+}
+
+function togglePause() {
+  paused = !paused;
+  if (paused) {
+    circBoolTimerId.pause();
+    circIncTimerId.pause();
+    if (timerId != null) timerId.pause();
+    ctxt.innerHTML = 'PAUSED';
+  } else {
+    circBoolTimerId.resume();
+    circIncTimerId.resume();
+    if (timerId != null) {
+      timerId.resume();
+      ctxt.innerHTML = currentWorkout.steps[currentStep].name;
+    } else {
+      ctxt.innerHTML = 'WELCOME';
+    }
+  }
+}
+
+
+
+  var s = (p) => {
+
+    p.setup = () => {
+      p.noStroke();
+      choosePalette();
+      p.frameRate(fps);
+      var can = p.createCanvas(p.windowWidth, p.windowHeight).canvas;
+      can.id = 'canvas';
+      can.className += ' centered';
+
+      setRate(20);
+    }
+
+    p.draw = () => {
+      p.background(bgc);
+
+      drawCircle();
+      drawRect();
+    }
+
+    drawRect = () => {
+      p.fill(255);
+      p.rect(50, 50, 75, 75);
+    }
+
+    drawCircle = () => {
+      p.fill(cc);
+      p.ellipse(p.width/2, p.height/2, 150 + p.width*0.003*circIndex);
+    }
+
+    p.mousePressed = () => {
+      if (p.mouseX >= 50 &&
+          p.mouseX <= 125 &&
+          p.mouseY >= 50 &&
+          p.mouseY <= 125) {
+            loadWorkout(basic, 0, 0);
+          }
+    }
+
+    choosePalette = () => {
+      p.colorMode(p.HSB, 360, 100, 100, 1);
+      var baseCoords = p.createVector(p.random(360), p.random(0.4, 0.7));
+      var c1 = p.createVector(mapToCircle(baseCoords.x, 1, 90), baseCoords.y);
+
+      //var c2 = p.createVector(mapToCircle(baseCoords.x, -1, 0), baseCoords.y);
+
+      bgc = p.color(baseCoords.x, 100*baseCoords.y, 95);
+      cc = p.color(c1.x, 100*c1.y, 90);
+
+      console.log(bgc);
+      console.log(cc);
+
+    }
+
+
+    loadWorkout = (newWorkout, i, n) => {
+      currentWorkout = newWorkout;
+      currentStep = i;
+      currentSub = n;
+      setRate(currentWorkout.steps[i].s[n][1]);
+      ctxt.innerHTML = currentWorkout.steps[i].name;
+      ttxt.innerHTML = currentWorkout.name;
+      info.innerHTML = rate;
+
+      if (timerId != null) {
+        timerId.clear();
+        timerId = null;
+      }
+
+      timerId = new Timer(()=>{
+        if (currentWorkout.steps[i].s[n+1] != null) {
+          loadWorkout(currentWorkout, i, n+1);
+          console.log(sPerStroke);
+        } else if (currentWorkout.steps[i+1] != null) {
+          loadWorkout(currentWorkout, i+1, 0);
+        } else {
+          ctxt.innerHTML = 'END';
+          setRate(22);
+          ttxt.innerHTML = 'FREE';
+          info.innerHTML = rate;
+        }
+      }, currentWorkout.steps[i].s[n][0]*60*1000);
+
+    }
+
+  }
+
+  var instp5 = new p5(s);
+
+</script>
+
+
+
+
+<script>
+
+var test = {
+  name:'TEST',
+  steps:[
+    {name:'TEST_01',
+      s:[[0.1,20],[0.1,30]]}
+  ]
+}
+
+var basic = {
+  name:'BASIC',
+  steps:[
+    {name:'Warmup',
+      s:[[2,22],[2,24]]},
+    {name:'Ladder',
+      s:[[1,26],[1,28],[1,30],[1,28],[1,26],[1,24],[5,26],[1,24],[2,28],[1,26]]},
+    {name:'Intervals',
+      s:[[0.5,30],[0.5,26],
+          [0.5,30],[0.5,26],
+          [0.5,30],[0.5,26],
+          [0.5,30],[0.5,26],
+          [0.5,30],[0.5,26],
+          [0.5,30],[0.5,26],
+          [0.5,30],[0.5,26],
+          [0.5,30],[0.5,26]]},
+    {name:'Cooldown',
+      s:[[1,24]]},
+  ]
+}
+
+</script>
+
+</body>

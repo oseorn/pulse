@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+#canvas {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+
+.txt {
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-125%);
+  font-size:150px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight:bolder;
+  color:#fff;
+  z-index:3;
+}
+
+.title {
+  position:fixed;
+  margin:0 auto;
+  top:40px;
+  left:50%;
+  transform: translate(-50%,0);
+  font-size:75px;
+  font-family:'Open Sans', sans-serif;
+  font-weight:bolder;
+  color:#fff;
+  z-index:3;
+}
+
+.info {
+  position:fixed;
+  margin:0 auto;
+  top:calc(50% + 25px);
+  left:50%;
+  transform:translate(-50%,50%);
+  font-size:60px;
+  font-family:'Open Sans', sans-serif;
+  font-weight:bolder;
+  color:#fff;
+  z-index:3;
+}
