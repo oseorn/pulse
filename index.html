@@ -126,6 +126,7 @@ function togglePause() {
     circBoolTimerId.pause();
     circIncTimerId.pause();
     if (timerId != null) timerId.pause();
+    if (bTimerIf != null) bTimerId.pause();
     ctxt.innerHTML = 'PAUSED';
   } else {
     circBoolTimerId.resume();
@@ -135,6 +136,10 @@ function togglePause() {
       ctxt.innerHTML = currentWorkout.steps[currentStep].name;
     } else {
       ctxt.innerHTML = 'WELCOME';
+    }
+
+    if (bTimerId != null) {
+      bTimerId.resume();
     }
   }
 }
