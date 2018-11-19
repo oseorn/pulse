@@ -2,7 +2,7 @@
 <head>
   <script src='p5.min.js'></script>
   <link rel='stylesheet' href='style.css'>
-  <title>PULSE 0.5</title>
+  <title>PULSE 0.6</title>
 </head>
 <body>
 
@@ -28,6 +28,8 @@
   document.body.append(ttimer);
   ttimer.innerHTML = '0';
 
+
+  var can;
 
   var fps = 60;
   var rate;
@@ -152,7 +154,7 @@ function togglePause() {
       p.noStroke();
       choosePalette();
       p.frameRate(fps);
-      var can = p.createCanvas(p.windowWidth, p.windowHeight).canvas;
+      can = p.createCanvas(p.windowWidth, p.windowHeight).canvas;
       can.id = 'canvas';
       can.className += ' centered';
 
@@ -173,7 +175,7 @@ function togglePause() {
 
     drawCircle = () => {
       p.fill(cc);
-      p.ellipse(p.width/2, p.height/2, 150 + (p.width*0.7*(circIndex/circIncRate)));
+      p.ellipse(p.width/2, p.height/2, 150 + (can.width*0.4*(circIndex/circIncRate)));
     }
 
     p.mousePressed = () => {
@@ -183,6 +185,9 @@ function togglePause() {
           p.mouseY <= 125) {
             loadWorkout(basic, 0, 0);
           }
+           else {
+             alert(p.width + ' ' + window.innerWidth);
+           }
     }
 
     choosePalette = () => {
