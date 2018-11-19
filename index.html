@@ -79,6 +79,7 @@
         circIndex = circIncRate;
       }
       circIncTimerId.reset();
+      //console.log(circIndex);
     }, (0.5*sPerStroke*1000)/circIncRate);
   }
 
@@ -173,7 +174,7 @@ function togglePause() {
 
     drawCircle = () => {
       p.fill(cc);
-      p.ellipse(p.width/2, p.height/2, 150 + (p.width*0.008*circIndex));
+      p.ellipse(p.width/2, p.height/2, 150 + (p.width*0.8*(circIndex/circIncRate)));
     }
 
     p.mousePressed = () => {
