@@ -2,7 +2,7 @@
 <head>
   <script src='p5.min.js'></script>
   <link rel='stylesheet' href='style.css'>
-  <title>PULSE 0.1</title>
+  <title>PULSE 0.2</title>
 </head>
 <body>
 
@@ -173,7 +173,7 @@ function togglePause() {
 
     drawCircle = () => {
       p.fill(cc);
-      p.ellipse(p.width/2, p.height/2, 150 + (p.width*0.8*(circIndex/circIncRate)));
+      p.ellipse(p.width/2, p.height/2, 150 + (p.width*(circIndex/circIncRate)));
     }
 
     p.mousePressed = () => {
