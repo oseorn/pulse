@@ -2,7 +2,7 @@
 <head>
   <script src='p5.min.js'></script>
   <link rel='stylesheet' href='style.css'>
-  <title>PULSE 0.7</title>
+  <title>PULSE 0.8</title>
 </head>
 <body>
 
@@ -175,7 +175,7 @@ function togglePause() {
 
     drawCircle = () => {
       p.fill(cc);
-      p.ellipse(p.width/2, p.height/2, 150 + (p.windowWidth*0.7*(circIndex/circIncRate)));
+      p.ellipse(p.width/2, p.height/2, p.pixelDensity() * (75 + (p.width*0.4*(circIndex/circIncRate))));
     }
 
     p.mousePressed = () => {
@@ -186,7 +186,7 @@ function togglePause() {
             loadWorkout(basic, 0, 0);
           }
            else {
-             alert(can.width +' vs ' +(150 + (can.width * 0.4)));
+             //alert();
            }
     }
 
