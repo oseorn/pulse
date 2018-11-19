@@ -152,7 +152,7 @@ function togglePause() {
       p.noStroke();
       choosePalette();
       p.frameRate(fps);
-      var can = p.createCanvas(p.windowWidth, p.windowHeight).canvas;
+      var can = p.createCanvas(p.displayWidth * p.pixelDensity(), p.displayHeight * p.pixelDensity()).canvas;
       can.id = 'canvas';
       can.className += ' centered';
 
