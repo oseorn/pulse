@@ -173,7 +173,7 @@ function togglePause() {
 
     drawCircle = () => {
       p.fill(cc);
-      p.ellipse(p.width/2, p.height/2, 150 + (p.width*0.7*p.pixelDensity()*(circIndex/circIncRate)));
+      p.ellipse(p.width/2, p.height/2, 150 + (p.width*0.7*(circIndex/circIncRate)));
     }
 
     p.mousePressed = () => {
