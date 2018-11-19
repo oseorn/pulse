@@ -2,7 +2,7 @@
 <head>
   <script src='p5.min.js'></script>
   <link rel='stylesheet' href='style.css'>
-  <title>PULSE 0.3</title>
+  <title>PULSE 0.4</title>
 </head>
 <body>
 
@@ -152,7 +152,7 @@ function togglePause() {
       p.noStroke();
       choosePalette();
       p.frameRate(fps);
-      var can = p.createCanvas(p.displayWidth * p.pixelDensity(), p.displayHeight * p.pixelDensity()).canvas;
+      var can = p.createCanvas(p.windowWidth, p.windowHeight).canvas;
       can.id = 'canvas';
       can.className += ' centered';
 
@@ -173,7 +173,7 @@ function togglePause() {
 
     drawCircle = () => {
       p.fill(cc);
-      p.ellipse(p.width/2, p.height/2, 150 + (p.width*(circIndex/circIncRate)));
+      p.ellipse(p.width/2, p.height/2, 150 + (p.width*0.7*p.pixelDensity()*(circIndex/circIncRate)));
     }
 
     p.mousePressed = () => {
