@@ -167,6 +167,7 @@ function togglePause() {
       drawCircle();
       drawLongRect();
       drawShortRect();
+      drawBurnRect();
     }
 
     drawLongRect = () => {
@@ -179,27 +180,33 @@ function togglePause() {
       p.rect(50, 175, 75, 75);
     }
 
+    drawBurnRect = () => {
+      p.fill(255);
+      p.rect(50, 300, 75, 75);
+    }
+
     drawCircle = () => {
       p.fill(cc);
       p.ellipse(p.width/2, p.height/2, 150 + (screen.height*1.5*(circIndex/circIncRate)));
     }
 
     p.mousePressed = () => {
-      if (p.mouseX >= 50 &&
-          p.mouseX <= 125 &&
-          p.mouseY >= 50 &&
+      if (p.mouseX >= 50 && p.mouseX <= 125) {
+      if (p.mouseY >= 50 &&
           p.mouseY <= 125) {
             loadWorkout(basic, 0, 0);
           }
-        else if (p.mouseX >= 50 &&
-            p.mouseX <= 125 &&
-            p.mouseY >= 175 &&
+        else if (p.mouseY >= 175 &&
             p.mouseY <= 250) {
              loadWorkout(short, 0, 0);
            }
+        else if (p.mouseY >= 300 && p.mouseY <= 375) {
+          loadWorkout(burn, 0, 0);
+        }
         else {
           //alert();
         }
+      }
     }
 
     choosePalette = () => {
@@ -315,6 +322,32 @@ var short = {
       s:[[4,24],[3,26],[1,28]]},
     {name:'Cooldown',
       s:[[2,18]]},
+  ]
+}
+
+var burn = {
+  name: 'BURN',
+  steps : [
+    {name: 'Warmup',
+      s:[[2, 22]]},
+    {name: 'Burst',
+      s:[[2.5, 28]]},
+    {name: 'Rest',
+      s:[[1, 22]]},
+    {name: 'Burst',
+      s:[[2.5, 28]]},
+    {name: 'Rest',
+      s:[[1, 22]]},
+    {name: 'Burst',
+      s:[[2.5, 28]]},
+    {name: 'Rest',
+      s:[[1, 22]]},
+    {name: 'Burst',
+      s:[[2.5, 28]]},
+    {name: 'Rest',
+      s:[[1, 22]]},
+    {name: 'Cooldown',
+      s:[[2, 20]]}
   ]
 }
 
